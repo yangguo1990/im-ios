@@ -1,0 +1,5 @@
+
+
+@interface NTESUIKitConfig : NIMKitConfig
+
+@end

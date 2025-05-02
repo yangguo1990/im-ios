@@ -1,0 +1,16 @@
+/* 
+  InfoPlist.strings
+  miliao
+
+  Created by apple on 2022/11/29.
+  
+*/
+
+
+"CFBundleDisplayName" = "云水谣情";
+"NSLocationWhenInUseUsageDescription" = "云水谣情需要访问你的位置，用户获取附近的好友";
+"NSCameraUsageDescription" = "云水谣情想要访问你的摄像头权限，用户美颜设置";
+"NSMicrophoneUsageDescription" = "云水谣情想要访问你的麦克风权限，用户美颜设置";
+"NSPhotoLibraryUsageDescription" = "云水谣情需要访问你的相册，用于头像上传";
+"UILaunchStoryboardName" = "LaunchScreen";
+

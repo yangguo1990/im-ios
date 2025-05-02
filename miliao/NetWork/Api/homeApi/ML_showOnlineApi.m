@@ -1,0 +1,50 @@
+//
+//  ML_showOnlineApi.m
+//  miliao
+//
+//  Created by apple on 2022/8/31.
+//
+
+#import "ML_showOnlineApi.h"
+@interface ML_showOnlineApi()
+
+@property (nonatomic,copy)NSString *token;
+@property (nonatomic,copy)NSString *page;
+@property (nonatomic,copy)NSString *limit;
+@property (nonatomic,strong)NSNumber *nonce;
+@property (nonatomic,copy)NSString *type;
+@property (nonatomic,copy)NSString *location;
+@property (nonatomic,copy)NSString *extra;
+
+
+@end
+@implementation ML_showOnlineApi
+
+- (id)initWithtoken:(NSString *)token
+              extra:(NSString *)extra{
+
+    if (self = [super init]) {
+        self.token = token;
+        self.extra = extra;
+    }
+    return self;
+}
+
+- (NSString *)requestUrl
+{
+    return @"/host/getRandomOnlineHost";
+}
+
+- (YTKRequestMethod)requestMethod
+{
+    return YTKRequestMethodPOST;
+}
+
+- (id)requestArgument {
+    return @{
+        @"token":self.token,
+        @"extra":self.extra
+     };
+}
+
+@end

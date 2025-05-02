@@ -1,0 +1,175 @@
+//
+//  PrefixHeader.pch
+//  miliao
+// com.haojiajiasisanling
+//  Created by apple on 2022/8/20.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import "NSObject+ML.h"
+#import "NTESGlobalMacro.h"
+#import "UIView+frame.h"
+#import "UIImageView+WebCache.h"
+#import "MJExtension.h"
+#import "AppDelegate.h"
+#import "ML_CommonApi.h"
+#import "UIViewController+CurrentShowVC.h"
+#import "MBProgressHUD.h"
+#import "ML_AppConfig.h"
+#import "ML_TanchuangView.h"
+#import "FYAppManager.h"
+//#import <UMCommon/MobClick.h>
+#import <libCNamaSDK/FURenderer.h>
+#import <libCNamaSDK/CNamaSDK.h>
+
+#define KEY_WINDOW ((AppDelegate *)[UIApplication sharedApplication].delegate)
+
+CG_INLINE void ADD_NOTIFICATION(NSString *name, id target, SEL action, id object)
+{
+    [[NSNotificationCenter defaultCenter] addObserver:target selector:action name:name object:object];
+}
+CG_INLINE void POST_NOTIFICATION(NSString *name, id object, NSDictionary *userInfo)
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:name object:object userInfo:userInfo];
+}
+
+
+#define  kisCH  1 // 是否为单一的中文版本
+#define  kisTF  1 // 打企业签名时就改为1
+
+
+//#define ML_KBaseUrl @"http://mlapi-oversea.dhxwlkj.com" // 海外测试 http://mlapi-oversea.dhxwlkj.com
+//#define ML_KBaseUrl [[[NSBundle mainBundle] bundleIdentifier] isEqualToString:@"com.dahuixiongmiliao"]?@"http://mlapi-test.dhxwlkj.com":@"http://api.kangs2023.com"
+//#define ML_KBaseUrl @"http://api.kangs2023.com"
+//#define ML_KBaseUrl @"http://mlapi-test.dhxwlkj.com" // 国内阿里测试
+//#define ML_KBaseUrl @"http://mlapi.dhxwlkj.com" // 国内阿里正式
+//#define ML_KBaseUrl @"http://192.168.0.121:8888" // 荣
+//#define ML_KBaseUrl @"https://api.tvesfvjm.xyz"
+#define ML_KBaseUrl ([ML_AppUserInfoManager sharedManager].hostip)
+//#define kJiedianName [ML_KBaseUrl isEqualToString:@"http://api.kangs2023.com"]?@"siliaolist":@"dahuixiong"
+//#define kJiedianName [ML_KBaseUrl isEqualToString:@"https:///api.zgdouyou.com"]?@"siliaolist":@"dahuixiong"
+#define kJiedianName @"meiliaolist"
+#define LanguagePath    [[NSBundle mainBundle] pathForResource:[self getPreferredLanguage] ofType:@"lproj"]
+/*
+ *  根据键值获取返回转换结果
+ */
+#define Localized(key, a)  kisCH?key:([[NSBundle bundleWithPath:LanguagePath] localizedStringForKey:(key) value:nil table:@"Localizable"])    //table为语言文件名Language.strings
+
+
+
+//#define  kML_ApiKey  @"17SgH6kkUNk8tyxjR6rbXEDiIR4P3nQh"
+
+#define  kML_ApiKey @"ecc8360d6c32c1d25c64700d464bbf24"// @"ca2c8cd276314de3a00d8368bd7a9989"
+
+
+#define RCLocalizedString(key) NSLocalizedStringFromTable(key, @"RongCloudKit", nil)
+
+// 是否是刘海屏幕
+#define SSL_isFullScreen \
+({BOOL isPhoneX = NO;\
+if (@available(iOS 11.0, *)) {\
+isPhoneX = [[UIApplication sharedApplication] statusBarFrame].size.height > 20.0;\
+}\
+(isPhoneX);})
+
+// 电池栏高度
+#define  SSL_StatusBarHeight     (SSL_isFullScreen ? 44.f : 20.f)
+// 导航栏高度
+#define SSL_NavigationBarHeight \
+({CGFloat statusBarHeight = 0.0;\
+if (@available(iOS 13.0, *)) {\
+statusBarHeight = [UIApplication sharedApplication].windows.firstObject.windowScene.statusBarManager.statusBarFrame.size.height;\
+} else { \
+statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;\
+}\
+(statusBarHeight);\
+})
+
+// tabBar高度
+#define  SSL_TabbarHeight  (SSL_isFullScreen ? (49.f+34.f) : 49.f)
+// 导航栏+电池栏高度.
+#define  SSL_StatusBarAndNavigationBarHeight  (SSL_isFullScreen ? 88.f : 64.f)
+// 安全区域高度
+#define  SSL_TabbarSafeBottomMargin         (SSL_isFullScreen ? 34.f : 10.f)
+//toolbar高度
+#define SSL_ToolBarHeight (SSL_isFullScreen ? (44.f+SSL_TabbarSafeBottomMargin) : 44.f)
+
+#define  SSL_TabbarMLMargin         (SSL_isFullScreen ? 49.f : 15.f)
+
+#define kplaceToast(A) [ML_TanchuangView showWithTitle:(A)];
+#define PNSToast(view, str, duration) ({ MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:(view) animated:YES]; hud.mode = MBProgressHUDModeText; hud.detailsLabel.font = [UIFont boldSystemFontOfSize:14.f]; hud.detailsLabel.text = (str); [hud hideAnimated:YES afterDelay:(duration)]; })
+
+#define PNSATAUTHSDKINFOKEY @"ATAuthSDKInfoKey"
+#define PNSATAUTHSDKINFO  @"f6YBan+85kEU/SHcLU/NPcKfMMd0sI83lfP/reMK936dertOLdHicL+8xutVl9hY2+s5vIwcpVyxmSbAKdtABZyNH0NLyGJhJx+Kz4euAwUF4tzGGzXTEGmO3ZpjGGG5qWuudaw8/HWy+pW1JcjKyzmp3KFAmgI+wKvXIA0A/ik/+tF/jXuAiGBRPnXtUh/CU7cZnxtu9DA88d9FC2sMOY8cDSJo2eoYhXwSSedImPuJgO3lDTHgGlER/BQVikRiEs8LEwmz8DP0BDBvcm48Ug=="
+
+
+//底部的安全距离
+#define kBottomSafeAreaHeight [UIApplication sharedApplication].delegate.window.safeAreaInsets.bottom
+#define ML_ScreenWidth                              [UIScreen mainScreen].bounds.size.width
+#define ML_ScreenHeight                             [UIScreen mainScreen].bounds.size.height
+#define ML_TabbarHeight  (kBottomSafeAreaHeight + 49)
+#define ML_NavViewHeight (SSL_isFullScreen ? 89 : 64)
+#define kFitSizeWithSpacing(spacing, With, Height)  CGSizeMake((ML_ScreenWidth - 16 * 2), ((ML_ScreenHeight - 16 * 2) / ((CGFloat)With / (CGFloat)Height)))
+
+// 颜色
+#define ML_NavColor [UIColor colorWithHexString:@"#FF60B5"]
+#define kZhuColor  [UIColor colorWithHexString:@"#000000"] // 主色调 #8501FB
+#define kLineVColor [UIColor colorWithHexString:@"F7F7F7"]
+#define UIColorHex(rgbValue)                                                                                             \
+[UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16)) / 255.0                                               \
+                green:((float)((rgbValue & 0xFF00) >> 8)) / 255.0                                                  \
+                 blue:((float)(rgbValue & 0xFF)) / 255.0                                                           \
+                alpha:1.0]
+
+// 时间
+#define ML_ViewDismissTime 1
+
+// 快捷
+#define kGetColor(colorStr) [UIColor colorWithHexString:colorStr]
+
+#define kGetUrl(urlStr) [NSURL URLWithString:urlStr]
+
+#define kHostDizhi   [kJiedianName isEqualToString:@"siliaolist"]?@"hongkong":@"shenzhen"
+//#define kHttpIcon    [NSString stringWithFormat:@"https://%@.oss-cn-%@.aliyuncs.com", "siliaolist", "hongkong"]
+//#define kHttpIcon    @"https://siliaolist.oss-cn-hongkong.aliyuncs.com"
+#define kHttpIcon    @"https://oss.zgdouyou.com"
+//#define kHttpIcon [ML_KBaseUrl isEqualToString:@"http://api.kangs2023.com"]?@"https://siliaolist.oss-cn-hongkong.aliyuncs.com":@"https://dahuixiong.oss-cn-shenzhen.aliyuncs.com/" // kJiedianName
+#define kGetUrlPath(urlPath) ([urlPath containsString:@"http"]?kGetUrl(urlPath): [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", [ML_AppUserInfoManager sharedManager].currentLoginUserData.domain?:kHttpIcon, urlPath]])
+
+#define kGetImage(imageName) ([UIImage imageNamed:kisCH?imageName:[NSString stringWithFormat:@"%@_Lo", imageName]])?:[UIImage imageNamed:imageName]
+#define kGetFont(font) [UIFont systemFontOfSize:font]
+#define mWidthScale [UIScreen mainScreen].bounds.size.width/375.0
+#define mHeightScale [UIScreen mainScreen].bounds.size.height/812.0
+
+#define kSelf __weak typeof(self) weakself = self
+#define kSelf2 __weak typeof(self) weakself2 = weakself
+#define kSelf3 __weak typeof(self) weakself3 = weakself2
+#define kSelf4 __weak typeof(self) weakself4 = weakself3
+
+
+#define kPlaceImage [UIImage imageNamed:@"app_place_icon"]
+
+#define MlAgreementhtml  @"http://static-test1.gyqtu.cn/userAgreement/index.html"
+#define MlLogoffPolicyhtml @"http://static-test1.gyqtu.cn/logoffPolicy"
+#define MlHelphtml  (kisCH?@"http://static-test1.gyqtu.cn/help/index.html":@"http://mlhtml-oversea.dhxwlkj.com/help/index.html")
+#define MlPrivacyhtml  (kisCH?@"http://static-test1.gyqtu.cn/privacyPolicy/index.html":@"http://mlhtml-oversea.dhxwlkj.com/privacyPolicy/index.html")
+#define MlRealCertificationHtml @"http://static-test1.gyqtu.cn/realCertification"
+
+
+#define Mlliantongtml @"https://ms.zzx9.cn/html/oauth/protocol2.html"
+#define Mlyidongtml @"https://wap.cmpassport.com/resources/html/contract.html"
+#define Mldianxinacounttml @"https://id.189.cn/html/agreement_538.html"
+#define Mldianxinprivacytml @"https://id.189.cn/html/agreement_539.html"
+
+
+
+
+#endif
+#endif /* PrefixHeader_pch */
